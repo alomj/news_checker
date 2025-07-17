@@ -15,6 +15,7 @@ openapi==2.0.0
 primp==0.15.0
 pycodestyle==2.14.0
 pydantic==2.11.7
+pydantic-settings==2.10.1
 pydantic_core==2.33.2
 pyflakes==3.4.0
 referencing==0.36.2
