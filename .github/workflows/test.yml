@@ -22,5 +22,5 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          coverage run --source=news_checker/ -m pytest .
+          coverage run --omit="tests/*" -m pytest tests/
           coverage report
