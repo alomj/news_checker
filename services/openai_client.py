@@ -1,12 +1,18 @@
 import httpx
 from typing import List, Optional
 from fastapi import status, HTTPException
-from config import OpenAISettings
+from config import OpenAISettings, get_openai_settings
 
 
 class OpenAiService:
     def __init__(self, settings: Optional[OpenAISettings] = None,
                  client: Optional[httpx.AsyncClient] = None):
+        if settings is None:
+            try:
+                settings = get_openai_settings()
+            except Exception as e:
+                raise ValueError(f'Could not load OpenAI settings {e}')
+
         self.model = settings.model
         self.api_key = settings.openai_key
         self.base_url = settings.base_url
