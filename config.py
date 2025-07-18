@@ -14,5 +14,8 @@ class Settings(BaseSettings):
     app_description: str = 'Custom utility to validate whether your source is fake or not'
 
 
-open_api_setting = OpenAISettings()
+def get_openai_settings():
+    return OpenAISettings()
+
+
 settings = Settings()
