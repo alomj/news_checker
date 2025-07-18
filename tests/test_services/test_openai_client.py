@@ -32,13 +32,15 @@ class TestOpenAiService:
             assert result == {"choices": [{"message": {"content": 'Fake News'}}]}
 
     async def test_client_get_fail(self):
+        settings = FakeSettings()
+
         def mock_send(request):
             return httpx.Response(status_code=status.HTTP_401_UNAUTHORIZED)
 
         transport = MockTransport(mock_send)
 
         async with AsyncClient(transport=transport) as client:
-            service = OpenAiService(client=client)
+            service = OpenAiService(client=client, settings=settings)
 
             messages = [{'role': 'user', 'content': 'Test'}]
 
