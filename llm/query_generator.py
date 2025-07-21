@@ -1,5 +1,6 @@
 from services.openai_client import OpenAiService
 from typing import List
+from utils.parse_response import parse_response
 
 
 class QueryGenerator:
@@ -26,6 +27,4 @@ class QueryGenerator:
 
     @staticmethod
     def _parse(response: dict) -> List[str]:
-        content = response['choices'][0]['message']['content']
-        lines = content.strip().split("\n")
-        return [line.lstrip('123456789. ').strip() for line in lines if line.strip()]
+        return parse_response(response)
