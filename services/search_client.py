@@ -36,9 +36,9 @@ class SearchService:
                     url = hit.get('url')
                     if not url:
                         continue
-                    search_h = SearchHit(title=title,url=url)
+                    search_h = SearchHit(title=title, url=url)
                     search_hit.append(search_h)
-                results[headline].append(QueryResult(query=query, results= search_hit))
+                results[headline].append(QueryResult(query=query, results=search_hit))
 
         return results
 
@@ -47,7 +47,7 @@ class SearchService:
         items = []
         for headline in headlines_query:
             headline_query_response = HeadlineQueryResponse(headline=headline,
-                                  queries=headlines_query[headline])
+                                                            queries=headlines_query[headline])
             items.append(headline_query_response)
 
         return SearchResponse(items=items)
