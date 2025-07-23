@@ -4,13 +4,13 @@ from services.openai_client import OpenAiService
 from typing import List, Dict
 from schema import HeadlineQueryResponse, QueryResult, SearchHit, SearchResponse
 from utils.cleaning_queries import sanitize_query
-from utils.search_news import search_news
+from interfaces.search_provider import SearchProvider
 
 
 class SearchService:
-    def __init__(self, llm_engine: OpenAiService):
+    def __init__(self, llm_engine: OpenAiService, search_provider: SearchProvider):
         self.query_generator = QueryGenerator(llm_engine)
-        self.search_news = search_news
+        self.search_news = search_provider
 
     async def _generate_queries_for_headlines(self, headlines: List[str]):
         result = {}
@@ -26,7 +26,7 @@ class SearchService:
         results = {}
         for headline, queries in queries_by_headline.items():
             results[headline] = []
-            tasks = [asyncio.to_thread(self.search_news, q) for q in queries]
+            tasks = [asyncio.to_thread(self.search_news.search, q) for q in queries]
             search_res = await asyncio.gather(*tasks)
 
             for query, hits in zip(queries, search_res):
