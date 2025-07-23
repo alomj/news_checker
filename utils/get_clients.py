@@ -14,5 +14,6 @@ def get_search_provider() -> SearchProvider:
 
 
 def get_search_engine(llm_engine: OpenAiService = Depends(get_llm_engine),
-                      search_provider: SearchProvider = Depends(get_search_provider)) -> SearchService:
+                      search_provider: SearchProvider = Depends(get_search_provider)) \
+        -> SearchService:
     return SearchService(llm_engine, search_provider)
