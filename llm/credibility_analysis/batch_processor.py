@@ -1,5 +1,6 @@
 from schema import SearchResponse
 
+
 class BatchProcessor:
     def __init__(self, search_response: SearchResponse):
         self.search_response = search_response
@@ -30,7 +31,7 @@ class BatchProcessor:
         batches = []
 
         for i in range(0, len(all_hits), batch_size):
-            batch = all_hits[i:i+batch_size]
+            batch = all_hits[i:i + batch_size]
             batches.append(batch)
 
         return batches
@@ -41,4 +42,3 @@ class BatchProcessor:
         batches = self.split_into_batches(all_hits)
 
         return batches, metadata
-
