@@ -27,15 +27,23 @@ class OpenAiService:
             'model': self.model,
             'messages': messages
         }
-
-        if self._client:
-            response = await self._client.post(self.base_url, headers=header, json=json_data)
-        else:
-            async with httpx.AsyncClient() as client:
-                response = await client.post(self.base_url, headers=header, json=json_data)
+        try:
+            if self._client:
+                response = await self._client.post(self.base_url, headers=header, json=json_data)
                 response.raise_for_status()
+                return response.json()
+            else:
+                async with httpx.AsyncClient() as client:
+                    response = await client.post(self.base_url, headers=header, json=json_data)
+                    response.raise_for_status()
+                    return response.json()
 
-        if response.status_code != status.HTTP_200_OK:
-            raise HTTPException(status_code=response.status_code, detail="OpenAI request failed")
-
-        return response.json()
+        except httpx.HTTPStatusError as e:
+            raise HTTPException(status_code=e.response.status_code,
+                                detail=f'OpenAI API error: {e.response.text}')
+        except httpx.RequestError as e:
+            raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                                detail=f'Failed to connect to OpenAI API: {str(e)}')
+        except Exception as e:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                                detail=f'Unexpected error: {str(e)}')
