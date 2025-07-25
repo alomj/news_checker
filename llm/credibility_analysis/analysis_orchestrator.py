@@ -11,14 +11,10 @@ class AnalyzerOrchestrator:
         self.llm_analyzer = llm_analyzer
 
     async def process(self, search_response: SearchResponse):
-
         batch_processor = BatchProcessor(search_response)
         result_merger = ResultMerger(search_response)
 
-
         batches, metadata = batch_processor.process()
-
-
 
         tasks = [self.llm_analyzer.analyze_batch(batch) for batch in batches]
 
@@ -28,10 +24,8 @@ class AnalyzerOrchestrator:
             async with semaphore:
                 return await task
 
-
         limited_tasks = [limited_task(task) for task in tasks]
         completed_tasks = await asyncio.gather(*limited_tasks)
-
 
         result = result_merger.merge(completed_tasks, metadata)
 
