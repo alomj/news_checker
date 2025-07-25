@@ -6,7 +6,7 @@ class BatchProcessor:
         self.search_response = search_response
 
     def extract_all_hits_with_metadata(self):
-        metadata = {}
+        metadata = []
         all_hits = []
 
         for item_index, item in enumerate(self.search_response.items):
@@ -14,15 +14,13 @@ class BatchProcessor:
                 for result_index, hit in enumerate(query.results):
                     all_hits.append(hit)
 
-                    hit_id = f'{len(all_hits)}_{hit.url}'
-
-                    metadata[hit_id] = {
+                    metadata.append({
                         'item_index': item_index,
                         'query_index': query_index,
                         'result_index': result_index,
                         'headline': item.headline,
                         'query_text': query.query
-                    }
+                    })
 
         return metadata, all_hits
 
