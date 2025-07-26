@@ -26,7 +26,8 @@ class OpenAiService:
         self._client = client
 
     @retry(stop=stop_after_attempt(4), before=before_log(logger, logging.DEBUG),
-           after=after_log(logger, logging.DEBUG))
+           after=after_log(logger, logging.DEBUG),
+           reraise=True)
     async def ask(self, messages: List[dict]) -> dict:
         header = {
             "Authorization": f'Bearer {self.api_key}',
