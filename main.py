@@ -13,6 +13,24 @@ app = FastAPI(title=settings.app_title,
               )
 
 
+@app.post('/news-checker', status_code=status.HTTP_201_CREATED, response_model=SearchResponse)
+async def fake_checker(request: Request,
+                       search_service: SearchService = Depends(get_search_engine),
+                       llm_analyzer: LLMAnalyzer = Depends(get_llm_analyzer),
+                       ):
+    client = OpenAiService()
+    generator = QueryGenerator(client)
+    technical_analyzer = TechnicalAnalyzer(llm_analyzer)
+
+    query = await generator.generate(headline=request.headline)
+
+    search_items = await search_service.generate(query)
+
+    result = await technical_analyzer.analyze(search_response=search_items)
+
+    return result
+
+
 @app.post('/generate-news', status_code=status.HTTP_201_CREATED, response_model=None)
 async def generate_news(request: Request):
     client = OpenAiService()
