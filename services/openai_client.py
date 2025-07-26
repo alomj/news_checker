@@ -2,6 +2,13 @@ import httpx
 from typing import List, Optional
 from fastapi import status, HTTPException
 from config import OpenAISettings, get_openai_settings
+from tenacity import retry, stop_after_attempt, before_log, after_log
+import logging
+import sys
+
+logging.basicConfig(stream=sys.stderr, level=logging.WARNING)
+
+logger = logging.getLogger(__name__)
 
 
 class OpenAiService:
@@ -18,6 +25,8 @@ class OpenAiService:
         self.base_url = settings.base_url
         self._client = client
 
+    @retry(stop=stop_after_attempt(4), before=before_log(logger, logging.DEBUG),
+           after=after_log(logger, logging.DEBUG))
     async def ask(self, messages: List[dict]) -> dict:
         header = {
             "Authorization": f'Bearer {self.api_key}',
