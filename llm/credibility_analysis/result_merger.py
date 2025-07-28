@@ -33,6 +33,7 @@ class ResultMerger:
     def _sort_response_by_score(self):
         for item in self.response.items:
             for query in item.queries:
-                query.results.sort(key=lambda r: r.credibility_score if r.credibility_score else 0, reverse=True)
+                query.results.sort(key=lambda r: r.credibility_score if r.credibility_score else 0,
+                                   reverse=True)
 
         return self.response
