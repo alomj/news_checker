@@ -14,6 +14,11 @@ class ResultMerger:
                 all_results.extend(b)
 
         for current_score, current_metadata in zip(all_results, metadata):
+            if not isinstance(current_score, dict):
+                current_score = {
+                    'credibility_score': 50,
+                    'flags': {'sensational_tone': False, 'unsupported_claims': False}
+                }
 
             item_idx = current_metadata['item_index']
             query_idx = current_metadata['query_index']
