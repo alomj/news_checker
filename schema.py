@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 
 class Request(BaseModel):
@@ -13,6 +13,8 @@ class SearchRequest(BaseModel):
 class SearchHit(BaseModel):
     title: str | None = None
     url: str | None = None
+    credibility_score: Optional[float] | None = None
+    flags: Optional[dict] | None = None
 
 
 class QueryResult(BaseModel):
