@@ -18,7 +18,7 @@ class LLMAnalyzer:
             {
                 "role": "system",
                 "content": "Analyze credibility of the news articles provided by user. "
-                           "Return JSON array with same number of elements in same order: "
+                           "Return ONLY JSON array with same number of elements in same order: "
                            '[{"credibility_score": 0-100, "flags": '
                            '{"sensational_tone": bool, "unsupported_claims": bool}}]'
 
