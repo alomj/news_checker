@@ -28,4 +28,11 @@ class ResultMerger:
             target_hit.credibility_score = current_score['credibility_score']
             target_hit.flags = current_score['flags']
 
+        return self._sort_response_by_score()
+
+    def _sort_response_by_score(self):
+        for item in self.response.items:
+            for query in item.queries:
+                query.results.sort(key=lambda r: r.credibility_score if r.credibility_score else 0, reverse=True)
+
         return self.response
