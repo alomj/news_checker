@@ -1,7 +1,7 @@
 import httpx
 from typing import List, Optional
 from fastapi import status, HTTPException
-from config import OpenAISettings, get_openai_settings
+from config import Settings, get_settings
 from tenacity import retry, stop_after_attempt, before_log, after_log
 import logging
 import sys
@@ -12,11 +12,11 @@ logger = logging.getLogger(__name__)
 
 
 class OpenAiService:
-    def __init__(self, settings: Optional[OpenAISettings] = None,
+    def __init__(self, settings: Optional[Settings] = None,
                  client: Optional[httpx.AsyncClient] = None):
         if settings is None:
             try:
-                settings = get_openai_settings()
+                settings = get_settings()
             except Exception as e:
                 raise ValueError(f'Could not load OpenAI settings {e}')
 

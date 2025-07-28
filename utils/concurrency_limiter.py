@@ -1,9 +1,9 @@
 import asyncio
-from config import ConcurrencyLimit
+from config import Settings
 
 
 class ConcurrencyLimiter:
-    def __init__(self, max_concurrent: int = ConcurrencyLimit().max_limit):
+    def __init__(self, max_concurrent: int = Settings().max_concurrency_limit):
         self.semaphore = asyncio.Semaphore(max_concurrent)
 
     async def execute_tasks(self, tasks):
