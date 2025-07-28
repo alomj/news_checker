@@ -12,8 +12,16 @@ class QueryGenerator:
             {
                 "role": "system",
                 "content": (
-                    "You are a search expert. Given a news headline, generate 3 effective "
-                    "search queries to fact-check it using trustworthy sources."
+                    "You are a search expert. Given a news headline,"
+                    " generate 3  search queries"
+                    " to fact-check it it using multiple trustworthy and independent sources."
+                    " Use quotation marks for exact phrases and focus on different "
+                    "verification angles. "
+                    "DO NOT limit searches to specific websites "
+                    "- LET the search engine find the most relevant "
+                    "sources."
+                    " The output should be 3 plain search engine queries, "
+                    "ready to use in DuckDuckGo or Google."
                 )
             },
             {
