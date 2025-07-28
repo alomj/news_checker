@@ -5,11 +5,25 @@ import json
 
 
 def parse_response(dictionary: Dict) -> List[str]:
-    content = dictionary['choices'][0]['message']['content']
-    lines = content.strip().split("\n")
-    return [
-        basic_cleanup(re.sub(r"^\s*\d+\s*[.):\-]*\s*", "", line)) for line in lines if line.strip()
-    ]
+    try:
+        content = dictionary['choices'][0]['message']['content']
+    except KeyError as e:
+        raise ValueError(f"Missing key in OpenAI response: {e}")
+
+    except IndexError as e:
+        raise ValueError(f"Empty  array in OpenAI response {e}")
+
+    except Exception as e:
+        raise ValueError(f'Something went wrong {e}')
+
+    try:
+        lines = content.strip().split("\n")
+        return [
+            basic_cleanup(re.sub(r"^\s*\d+\s*[.):\-]*\s*", "", line))
+            for line in lines if line.strip()
+        ]
+    except Exception as e:
+        raise ValueError(f"Failed to parse lines from content: {e}")
 
 
 def parse_response_with_credibility(dictionary: Dict) -> List | None:
@@ -18,7 +32,7 @@ def parse_response_with_credibility(dictionary: Dict) -> List | None:
     except KeyError as e:
         raise ValueError(f"Missing key in OpenAI response: {e}")
     except IndexError as e:
-        raise ValueError(f"Empty choices array in OpenAI response {e}")
+        raise ValueError(f"Empty  array in OpenAI response {e}")
 
     if not content or not content.strip():
         raise ValueError("Empty content from OpenAI")
