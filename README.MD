@@ -42,7 +42,7 @@ A FastAPI-based service that analyzes news headlines for credibility using AI-po
 1. Clone the repository:
 ```bash
 git clone https://github.com/alomj/news_checker
-cd news-checker
+cd news_checker
 ```
 
 2. Install dependencies:
