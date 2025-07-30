@@ -1,7 +1,11 @@
+import json
+from typing import List
+
 from services.openai_client import OpenAiService
 from utils.parse_response import parse_response_with_credibility
-from typing import List
-import json
+from utils.reading_file import read_file
+
+file = read_file('prompts/llm_analyzer.txt')
 
 
 class LLMAnalyzer:
@@ -17,11 +21,7 @@ class LLMAnalyzer:
         messages = [
             {
                 "role": "system",
-                "content": "Analyze credibility of the news articles provided by user. "
-                           "Return ONLY JSON array with same number of elements in same order: "
-                           '[{"credibility_score": 0-100, "flags": '
-                           '{"sensational_tone": bool, "unsupported_claims": bool}}]'
-
+                "content": file
             },
             {
                 "role": "user",

@@ -1,6 +1,10 @@
-from services.openai_client import OpenAiService
 from typing import List
+
+from services.openai_client import OpenAiService
 from utils.parse_response import parse_response
+from utils.reading_file import read_file
+
+file = read_file('prompts/query_generator.txt')
 
 
 class QueryGenerator:
@@ -11,18 +15,7 @@ class QueryGenerator:
         messages = [
             {
                 "role": "system",
-                "content": (
-                    "You are a search expert. Given a news headline,"
-                    " generate 3  search queries"
-                    " to fact-check it it using multiple trustworthy and independent sources."
-                    " Use quotation marks for exact phrases and focus on different "
-                    "verification angles. "
-                    "DO NOT limit searches to specific websites "
-                    "- LET the search engine find the most relevant "
-                    "sources."
-                    " The output should be 3 plain search engine queries, "
-                    "ready to use in DuckDuckGo or Google."
-                )
+                "content": file
             },
             {
                 "role": "user",
